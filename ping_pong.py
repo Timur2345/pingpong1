@@ -4,7 +4,6 @@ from random import randint
 window = display.set_mode((700,500))
 
 display.set_caption('pingpong')
-#ball
 galaxy = transform.scale(image.load("galaxy.jpg"),(700,500))
 speed_x = 3
 speed_y = 3
@@ -25,15 +24,22 @@ class GameSprite(sprite.Sprite):
 class Player(GameSprite):  
     def update(self):
         keys_pressed=key.get_pressed()
-        if keys_pressed[K_UP] and self.rect.y < 630:
+        if keys_pressed[K_s] and self.rect.y < 400:
             self.rect.y += 10
-        if keys_pressed[K_DOWN] and self.rect.y > 0:
+        if keys_pressed[K_w] and self.rect.y > 0:
+            self.rect.y -= 10
+class Player1(GameSprite):  
+    def update(self):
+        keys_pressed=key.get_pressed()
+        if keys_pressed[K_DOWN] and self.rect.y < 400:
+            self.rect.y += 10
+        if keys_pressed[K_UP] and self.rect.y > 0:
             self.rect.y -= 10
 
 
-rocket=Player('racketki1.png',20,250,5,65,65)
-rocket1=Player('racketki2.png',650,250,5,65,65)
-
+rocket=Player('racketki1.png',20,250,5,10,100)
+rocket1=Player1('racketki2.png',650,250,5,10,100)
+ball = GameSprite('ball.png',350,250,5,50,50)
 
 
 finish = False
@@ -47,16 +53,16 @@ while game:
         ball.rect.y += speed_y
         window.blit(galaxy,(0,0))
         
-        
+        ball.reset()
+        ball.update()
         rocket.reset()
         rocket.update()
         rocket1.reset()
         rocket1.update() 
-        
-    if sprite.collide_rect(rocket,ball)
-      or sprite.collide_rect(rocket1,ball):
-        
-    speed_x *= -1
+    if ball.rect.y > 500-50 or ball.rect.y < 0:
+        speed_y *= -1
+    if sprite.collide_rect(rocket,ball) or sprite.collide_rect(rocket1,ball):   
+        speed_x *= -1
 
                                                                       
     display.update()
